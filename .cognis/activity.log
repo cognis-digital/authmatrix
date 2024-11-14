@@ -7,3 +7,4 @@
 2024-10-02T17:33:03  style(scan): bump the dev toolchain
 2024-10-10T12:50:10  build(cache): reduce false positives on edge cases
 2024-11-06T19:07:17  refactor(tests): trim whitespace in parsed fields
+2024-11-14T14:24:24  perf(mcp): improve the demo scenario
