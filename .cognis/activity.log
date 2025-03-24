@@ -14,3 +14,4 @@
 2025-02-09T18:32:52  perf(detect): add color + severity icons
 2025-02-17T13:49:59  test(fixtures): add usage examples to help
 2025-03-16T08:06:06  ci(rules): trim whitespace in parsed fields
+2025-03-24T15:23:13  docs(scan): add a regression fixture
