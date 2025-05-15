@@ -16,3 +16,4 @@
 2025-03-16T08:06:06  ci(rules): trim whitespace in parsed fields
 2025-03-24T15:23:13  docs(scan): add a regression fixture
 2025-04-19T10:40:20  refactor(scoring): short-circuit on first critical
+2025-05-15T17:57:27  test(cli): pin the test dependencies
