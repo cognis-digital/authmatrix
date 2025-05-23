@@ -17,3 +17,4 @@
 2025-03-24T15:23:13  docs(scan): add a regression fixture
 2025-04-19T10:40:20  refactor(scoring): short-circuit on first critical
 2025-05-15T17:57:27  test(cli): pin the test dependencies
+2025-05-23T12:14:34  test: it's not flaky, you're flaky
