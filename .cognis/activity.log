@@ -19,3 +19,4 @@
 2025-05-15T17:57:27  test(cli): pin the test dependencies
 2025-05-23T12:14:34  test: it's not flaky, you're flaky
 2025-06-19T19:31:41  chore(format): add type hints to the public API
+2025-06-27T14:48:48  chore: tune defaults
