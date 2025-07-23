@@ -20,3 +20,4 @@
 2025-05-23T12:14:34  test: it's not flaky, you're flaky
 2025-06-19T19:31:41  chore(format): add type hints to the public API
 2025-06-27T14:48:48  chore: tune defaults
+2025-07-23T09:05:55  perf(parser): dedupe overlapping findings
