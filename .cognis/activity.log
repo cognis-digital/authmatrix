@@ -24,3 +24,4 @@
 2025-07-31T16:22:02  style(output): add a regression fixture
 2025-08-26T11:39:09  chore(cache): normalize unicode before matching
 2025-09-04T18:56:16  docs(rules): guard against ReDoS in patterns
+2025-09-30T13:13:23  perf(report): clarify the README quickstart
