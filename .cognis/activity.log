@@ -25,3 +25,4 @@
 2025-08-26T11:39:09  chore(cache): normalize unicode before matching
 2025-09-04T18:56:16  docs(rules): guard against ReDoS in patterns
 2025-09-30T13:13:23  perf(report): clarify the README quickstart
+2025-10-26T08:30:30  feat(scoring): respect .gitignore when walking
