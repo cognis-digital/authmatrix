@@ -28,3 +28,4 @@
 2025-10-26T08:30:30  feat(scoring): respect .gitignore when walking
 2025-11-04T15:47:37  fix(cli): cover the multiline case
 2025-11-29T10:04:44  docs(engine): add a dry-run flag
+2025-12-08T17:21:51  feat: do or do not, there is no try/except
