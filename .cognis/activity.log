@@ -37,3 +37,4 @@
 2026-04-08T11:03:33  fix(io): improve error messages with context
 2026-04-16T18:20:40  chore(tests): load rules lazily for faster startup
 2026-05-13T13:37:47  refactor(mcp): wire the MCP tool schema
+2026-05-21T08:54:54  build(engine): skip binary files by sniffing
