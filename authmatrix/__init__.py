@@ -1,35 +1,11 @@
-"""AUTHMATRIX - access-control matrix coverage tester.
-
-Defensive / authorized-testing only. Compares an OBSERVED access-control
-matrix (which roles actually reached which endpoints) against an EXPECTED
-policy and reports authorization gaps: IDOR/over-permission, missing
-denials, and uncovered cells.
-"""
-from .core import (
-    Endpoint,
-    Role,
-    PolicyCell,
-    Observation,
-    Finding,
-    AuthMatrix,
-    Severity,
-    analyze,
-    load_matrix,
-)
-
-TOOL_NAME = "authmatrix"
-TOOL_VERSION = "1.0.0"
-
-__all__ = [
-    "Endpoint",
-    "Role",
-    "PolicyCell",
-    "Observation",
-    "Finding",
-    "AuthMatrix",
-    "Severity",
-    "analyze",
-    "load_matrix",
-    "TOOL_NAME",
-    "TOOL_VERSION",
-]
+"""authmatrix — part of the Cognis Neural Suite."""
+try:  # re-export the tool's public API + identity from core
+    from authmatrix.core import *  # noqa: F401,F403
+except Exception:  # pragma: no cover
+    pass
+try:
+    from authmatrix.core import TOOL_NAME, TOOL_VERSION
+except Exception:  # pragma: no cover
+    TOOL_NAME = "authmatrix"
+    TOOL_VERSION = "0.1.0"
+__version__ = TOOL_VERSION
