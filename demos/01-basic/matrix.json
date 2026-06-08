@@ -1,0 +1,52 @@
+{
+  "roles": [
+    {"name": "anon", "privilege": 0},
+    {"name": "user", "privilege": 1},
+    {"name": "support", "privilege": 2},
+    {"name": "admin", "privilege": 3}
+  ],
+  "endpoints": [
+    {"name": "list_products", "method": "GET", "path": "/api/products", "sensitive": false},
+    {"name": "get_own_order", "method": "GET", "path": "/api/orders/{id}", "sensitive": false},
+    {"name": "get_user_pii", "method": "GET", "path": "/api/users/{id}/profile", "sensitive": true},
+    {"name": "refund_order", "method": "POST", "path": "/api/orders/{id}/refund", "sensitive": true},
+    {"name": "admin_console", "method": "GET", "path": "/admin", "sensitive": true},
+    {"name": "admin_export", "method": "GET", "path": "/admin/export", "sensitive": true}
+  ],
+  "policy": [
+    {"role": "anon", "endpoint": "list_products", "expected": "allow"},
+    {"role": "anon", "endpoint": "get_user_pii", "expected": "deny"},
+    {"role": "anon", "endpoint": "admin_console", "expected": "deny"},
+
+    {"role": "user", "endpoint": "list_products", "expected": "allow"},
+    {"role": "user", "endpoint": "get_own_order", "expected": "allow"},
+    {"role": "user", "endpoint": "get_user_pii", "expected": "deny"},
+    {"role": "user", "endpoint": "refund_order", "expected": "deny"},
+    {"role": "user", "endpoint": "admin_console", "expected": "deny"},
+
+    {"role": "support", "endpoint": "get_user_pii", "expected": "allow"},
+    {"role": "support", "endpoint": "refund_order", "expected": "allow"},
+    {"role": "support", "endpoint": "admin_console", "expected": "deny"},
+
+    {"role": "admin", "endpoint": "admin_console", "expected": "allow"}
+  ],
+  "observations": [
+    {"role": "anon", "endpoint": "list_products", "status": 200},
+    {"role": "anon", "endpoint": "get_user_pii", "status": 200, "note": "IDOR: PII leaked to unauthenticated caller via guessable id"},
+    {"role": "anon", "endpoint": "admin_console", "status": 302, "note": "redirect served admin shell instead of blocking"},
+
+    {"role": "user", "endpoint": "list_products", "status": 200},
+    {"role": "user", "endpoint": "get_own_order", "status": 403, "note": "broken: legit user cannot read own order"},
+    {"role": "user", "endpoint": "get_user_pii", "status": 403},
+    {"role": "user", "endpoint": "refund_order", "status": 200, "note": "privilege escalation: regular user can refund"},
+    {"role": "user", "endpoint": "admin_console", "status": 401},
+
+    {"role": "support", "endpoint": "get_user_pii", "status": 200},
+    {"role": "support", "endpoint": "refund_order", "status": 200},
+    {"role": "support", "endpoint": "admin_console", "status": 403},
+
+    {"role": "support", "endpoint": "admin_export", "status": 200, "note": "undeclared endpoint reachable; not in policy"},
+
+    {"role": "admin", "endpoint": "admin_console", "status": 500, "note": "backend error during test"}
+  ]
+}
