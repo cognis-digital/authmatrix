@@ -1,0 +1,10 @@
+{
+  "name": "@cognis/authmatrix",
+  "version": "0.2.0",
+  "description": "JavaScript port of authmatrix (Cognis Neural Suite)",
+  "bin": {
+    "authmatrix": "index.js"
+  },
+  "license": "LicenseRef-COCL-1.0",
+  "type": "module"
+}
