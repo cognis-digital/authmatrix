@@ -20,6 +20,31 @@ pip install cognis-authmatrix
 authmatrix scan .            # → prioritized findings in seconds
 ```
 
+## Usage — step by step
+
+1. **Install** the CLI (console script `authmatrix`):
+   ```bash
+   pip install cognis-authmatrix
+   ```
+2. **Scan a role × endpoint matrix JSON** for authorization gaps (IDOR / over-permission):
+   ```bash
+   authmatrix scan matrix.json
+   ```
+3. **Read the result** as machine-readable JSON, or pipe a matrix in on stdin:
+   ```bash
+   authmatrix scan matrix.json --format json
+   cat matrix.json | authmatrix scan -
+   ```
+4. **Gate on severity** — `--fail-on` sets the minimum severity that triggers a non-zero exit:
+   ```bash
+   authmatrix scan matrix.json --fail-on high   # exit 1 only on high/critical
+   ```
+5. **Automate in CI** — fail the pipeline when authz gaps appear:
+   ```yaml
+   - run: pip install cognis-authmatrix
+   - run: authmatrix scan matrix.json --format json --fail-on high
+   ```
+
 ## Contents
 
 - [Why authmatrix?](#why) · [Features](#features) · [Quick start](#quick-start) · [Example](#example) · [Architecture](#architecture) · [AI stack](#ai-stack) · [How it compares](#how-it-compares) · [Integrations](#integrations) · [Install anywhere](#install-anywhere) · [Related](#related) · [Contributing](#contributing)
