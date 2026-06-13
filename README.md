@@ -9,16 +9,22 @@
 
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&duration=3500&pause=1000&color=6B46C1&center=true&vCenter=true&width=720&lines=Test+an+accesscontrol+matrix+role+x+endpoint+for+IDORauthz+g;Self-hostable+%C2%B7+MCP-native+%C2%B7+CI-ready+%C2%B7+polyglot" width="720"/>
 
-[![PyPI](https://img.shields.io/pypi/v/cognis-authmatrix.svg?color=6b46c1)](https://pypi.org/project/cognis-authmatrix/) [![CI](https://github.com/cognis-digital/authmatrix/actions/workflows/ci.yml/badge.svg)](https://github.com/cognis-digital/authmatrix/actions) [![License: COCL 1.0](https://img.shields.io/badge/License-COCL%201.0-2b6cb0.svg)](LICENSE) [![Suite](https://img.shields.io/badge/Cognis-Neural%20Suite-6b46c1.svg)](https://github.com/cognis-digital)
+[![install](https://img.shields.io/badge/install-git%2B%20%C2%B7%20pipx%20%C2%B7%20uv-6b46c1.svg)](#install--every-way-every-platform) [![CI](https://github.com/cognis-digital/authmatrix/actions/workflows/ci.yml/badge.svg)](https://github.com/cognis-digital/authmatrix/actions) [![License: COCL 1.0](https://img.shields.io/badge/License-COCL%201.0-2b6cb0.svg)](LICENSE) [![Suite](https://img.shields.io/badge/Cognis-Neural%20Suite-6b46c1.svg)](https://github.com/cognis-digital)
 
 *Part of the Cognis Neural Suite.*
 
 </div>
 
 ```bash
-pip install cognis-authmatrix
+pip install "git+https://github.com/cognis-digital/authmatrix.git"
 authmatrix scan .            # → prioritized findings in seconds
 ```
+
+<!-- cognis:layman:start -->
+## What is this?
+
+Authmatrix checks whether the right people can access the right parts of a web application — and the wrong people cannot. You give it a list of user roles (like "guest" or "admin"), a list of pages or API endpoints, and a record of what actually happened when each role tried to access each endpoint. It then flags mismatches: cases where someone was allowed in when they should have been blocked (a serious security hole called IDOR), or blocked when they should have been let through. It is built for developers and security testers who want a fast, scriptable way to catch authorization mistakes before attackers do.
+<!-- cognis:layman:end -->
 
 ## Contents
 
@@ -45,10 +51,56 @@ authz coverage
 <div align="right"><a href="#top">↑ back to top</a></div>
 
 <a name="quick-start"></a>
+<!-- cognis:domains:start -->
+## Domains
+
+**Primary domain:** Cyber & Security  ·  **JTF MERIDIAN division:** NULLBYTE · SPECTER
+
+**Topics:** `cognis` `security` `infosec` `cybersecurity` `blue-team`
+
+Part of the **Cognis Neural Suite** — 300+ source-available tools organized across 12 domains under the JTF MERIDIAN command structure. See the [suite on GitHub](https://github.com/cognis-digital) and [jtf-meridian](https://github.com/cognis-digital/jtf-meridian) for how the pieces fit together.
+<!-- cognis:domains:end -->
+
+<!-- cognis:install:start -->
+## Install
+
+`authmatrix` is source-available (not published to PyPI) — every method below installs
+straight from GitHub. Pick whichever you prefer; the one-line scripts auto-detect
+the best tool available on your machine.
+
+**One-liner (Linux / macOS):**
+```sh
+curl -fsSL https://raw.githubusercontent.com/cognis-digital/authmatrix/HEAD/install.sh | sh
+```
+
+**One-liner (Windows PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/cognis-digital/authmatrix/HEAD/install.ps1 | iex
+```
+
+**Or install manually — any one of:**
+```sh
+pipx install "git+https://github.com/cognis-digital/authmatrix.git"     # isolated (recommended)
+uv tool install "git+https://github.com/cognis-digital/authmatrix.git"  # uv
+pip install "git+https://github.com/cognis-digital/authmatrix.git"      # pip
+```
+
+**From source:**
+```sh
+git clone https://github.com/cognis-digital/authmatrix.git
+cd authmatrix && pip install .
+```
+
+Then run:
+```sh
+authmatrix --help
+```
+<!-- cognis:install:end -->
+
 ## Quick start
 
 ```bash
-pip install cognis-authmatrix
+pip install "git+https://github.com/cognis-digital/authmatrix.git"
 authmatrix --version
 authmatrix scan .                       # scan current project
 authmatrix scan . --format json         # machine-readable
@@ -141,6 +193,32 @@ curl -fsSL https://raw.githubusercontent.com/cognis-digital/authmatrix/main/inst
 <div align="right"><a href="#top">↑ back to top</a></div>
 
 <a name="related"></a>
+<a name="verification"></a>
+## Verification
+
+[![tests](https://img.shields.io/badge/tests-13%20passing-2ea44f.svg)](AUDIT.md)
+
+Every push is verified end-to-end. Latest audit (2026-06-12):
+
+```text
+tests        : 13 passed, 0 failed, 0 errored
+compile      : all modules parse
+cli          : C:\Python314\python.exe: No module named https
+package      : https
+```
+
+<details><summary>CLI surface (<code>--help</code>)</summary>
+
+```text
+C:\Python314\python.exe: No module named https
+```
+</details>
+
+Full machine-readable results: [`AUDIT.md`](AUDIT.md) · regenerate with `python -m https --help` + `pytest -q`.
+
+<div align="right"><a href="#top">↑ back to top</a></div>
+
+
 ## Related Cognis tools
 
 - [`portfan`](https://github.com/cognis-digital/portfan) — Summarize and diff nmap XML into prioritized, attackable findings

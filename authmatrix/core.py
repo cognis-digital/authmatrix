@@ -30,9 +30,8 @@ be performed only against systems you are authorized to test.
 """
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass, field, asdict
-from typing import Any, Dict, Iterable, List, Optional, Tuple
+from typing import Any, Dict, Iterable, List, Tuple
 
 
 # ---------------------------------------------------------------------------
