@@ -14,7 +14,10 @@ def _read_json(path: str) -> dict:
     if path == "-":
         return json.loads(sys.stdin.read())
     with open(path, "r", encoding="utf-8") as fh:
-        return json.loads(fh.read())
+        try:
+            return json.loads(fh.read())
+        except UnicodeDecodeError as exc:
+            raise ValueError("file is not valid UTF-8: %s" % exc) from exc
 
 
 def _render_table(findings, counts) -> str:
@@ -93,7 +96,7 @@ def _run_scan(args) -> int:
     try:
         data = _read_json(args.matrix)
         matrix = load_matrix(data)
-    except (OSError, ValueError, json.JSONDecodeError) as exc:
+    except (OSError, ValueError, json.JSONDecodeError, TypeError) as exc:
         sys.stderr.write("error: %s\n" % exc)
         return 2
 
@@ -122,10 +125,17 @@ def _run_scan(args) -> int:
 def main(argv: Optional[List[str]] = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
-    if args.command == "scan":
-        return _run_scan(args)
-    parser.print_help()
-    return 2
+    try:
+        if args.command == "scan":
+            return _run_scan(args)
+        parser.print_help()
+        return 2
+    except KeyboardInterrupt:
+        sys.stderr.write("\ninterrupted\n")
+        return 130
+    except Exception as exc:  # pragma: no cover
+        sys.stderr.write("internal error: %s\n" % exc)
+        return 2
 
 
 if __name__ == "__main__":

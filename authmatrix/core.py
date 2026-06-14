@@ -137,14 +137,37 @@ def load_matrix(data: Dict[str, Any]) -> AuthMatrix:
     if not isinstance(data, dict):
         raise ValueError("matrix document must be a JSON object")
 
+    def _require_list(key: str) -> list:
+        val = data.get(key, [])
+        if val is None:
+            val = []
+        if not isinstance(val, list):
+            raise ValueError("'%s' must be a list" % key)
+        return val
+
+    def _require_dict_item(item: Any, section: str) -> Dict[str, Any]:
+        if not isinstance(item, dict):
+            raise ValueError(
+                "each item in '%s' must be an object, got %r" % (section, item)
+            )
+        return item
+
     roles: Dict[str, Role] = {}
-    for r in data.get("roles", []):
+    for r in _require_list("roles"):
+        r = _require_dict_item(r, "roles")
         if "name" not in r:
             raise ValueError("each role requires a 'name'")
-        roles[r["name"]] = Role(name=r["name"], privilege=int(r.get("privilege", 0)))
+        try:
+            privilege = int(r.get("privilege", 0))
+        except (TypeError, ValueError):
+            raise ValueError(
+                "role '%s': 'privilege' must be an integer" % r.get("name", "?")
+            )
+        roles[r["name"]] = Role(name=r["name"], privilege=privilege)
 
     endpoints: Dict[str, Endpoint] = {}
-    for e in data.get("endpoints", []):
+    for e in _require_list("endpoints"):
+        e = _require_dict_item(e, "endpoints")
         if "name" not in e:
             raise ValueError("each endpoint requires a 'name'")
         endpoints[e["name"]] = Endpoint(
@@ -155,7 +178,8 @@ def load_matrix(data: Dict[str, Any]) -> AuthMatrix:
         )
 
     policy: List[PolicyCell] = []
-    for p in data.get("policy", []):
+    for p in _require_list("policy"):
+        p = _require_dict_item(p, "policy")
         expected = str(p.get("expected", "")).lower()
         if expected not in ("allow", "deny"):
             raise ValueError(
@@ -169,17 +193,31 @@ def load_matrix(data: Dict[str, Any]) -> AuthMatrix:
         policy.append(PolicyCell(role=role, endpoint=ep, expected=expected))
 
     observations: List[Observation] = []
-    for o in data.get("observations", []):
+    for o in _require_list("observations"):
+        o = _require_dict_item(o, "observations")
         role, ep = o.get("role"), o.get("endpoint")
         if role not in roles:
             raise ValueError("observation references unknown role: %r" % (role,))
         if ep not in endpoints:
             raise ValueError("observation references unknown endpoint: %r" % (ep,))
+        raw_status = o.get("status")
+        if raw_status is None:
+            raise ValueError(
+                "observation for ('%s', '%s') is missing required 'status' field"
+                % (role, ep)
+            )
+        try:
+            status = int(raw_status)
+        except (TypeError, ValueError):
+            raise ValueError(
+                "observation for ('%s', '%s'): 'status' must be an integer, got %r"
+                % (role, ep, raw_status)
+            )
         observations.append(
             Observation(
                 role=role,
                 endpoint=ep,
-                status=int(o.get("status")),
+                status=status,
                 note=str(o.get("note", "")),
             )
         )
@@ -227,8 +265,15 @@ def analyze(matrix: AuthMatrix) -> List[Finding]:
     for cell in matrix.policy:
         key = (cell.role, cell.endpoint)
         seen_cells.add(key)
-        role = matrix.roles[cell.role]
-        ep = matrix.endpoints[cell.endpoint]
+        role = matrix.roles.get(cell.role)
+        ep = matrix.endpoints.get(cell.endpoint)
+        if role is None or ep is None:
+            # Defensive: policy references a role/endpoint not in the index.
+            # load_matrix prevents this, but guard if AuthMatrix is built directly.
+            raise ValueError(
+                "policy cell ('%s', '%s') references an unknown role or endpoint"
+                % (cell.role, cell.endpoint)
+            )
         obs = obs_idx.get(key, [])
 
         if not obs:
