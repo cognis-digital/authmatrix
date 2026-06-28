@@ -20,6 +20,57 @@ pip install cognis-authmatrix
 authmatrix scan .            # → prioritized findings in seconds
 ```
 
+
+<!-- cognis:example:start -->
+## 🔎 Example output
+
+Real, reproducible output from the tool — runs offline:
+
+```console
+$ authmatrix-emit --version
+authmatrix 0.1.0
+```
+
+```console
+$ authmatrix-emit --help
+usage: authmatrix [-h] [--version] {scan} ...
+
+Test a role x endpoint access-control matrix for authorization gaps (IDOR /
+over-permission). Defensive / authorized use only.
+
+positional arguments:
+  {scan}
+    scan      Analyze a matrix JSON artifact and report authorization gaps.
+
+options:
+  -h, --help  show this help message and exit
+  --version   show program's version number and exit
+```
+
+> Blocks above are real `authmatrix` output — reproduce them from a clone.
+
+**Sample result format** _(illustrative values — run on your own data for real findings):_
+
+```
+{
+"timestamp": "2023-02-15T14:30:00Z",
+"actor": {
+"name": "Alice",
+"email": "alice@example.com"
+},
+"verb": "created",
+"object": {
+"type": "indicator",
+"id": "i-1234567890abcdef",
+"name": "Suspicious Domain",
+"description": "A domain known to be used by attackers",
+"confidence": 90
+}
+}
+```
+
+<!-- cognis:example:end -->
+
 ## Usage — step by step
 
 1. **Install** the CLI (console script `authmatrix`):

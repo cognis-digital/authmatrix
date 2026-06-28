@@ -1,0 +1,3 @@
+$ authmatrix-emit --version
+
+authmatrix 0.1.0
